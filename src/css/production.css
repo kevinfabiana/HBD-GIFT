@@ -1,0 +1,168 @@
+/* Production layer: loader curtain, replay coda, focus and motion safety.
+ * Nothing here is decorative — it is the frame around the story. */
+
+/* ── Loader ─────────────────────────────────────────────── */
+.story-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, var(--ivory), var(--cream) 60%, var(--blush));
+  transition:
+    opacity var(--transition-slow, 900ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform var(--transition-slow, 900ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-loader[data-leaving="true"] {
+  opacity: 0;
+  transform: translate3d(0, -1.5%, 0);
+  pointer-events: none;
+}
+
+.story-loader__inner {
+  max-width: 30rem;
+  text-align: center;
+}
+
+.story-loader__eyebrow {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--color-muted-foreground);
+}
+
+.story-loader__line {
+  margin-top: 1.6rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  line-height: 1.3;
+  color: var(--color-foreground);
+}
+
+.story-loader__accent {
+  display: block;
+  font-style: italic;
+  color: var(--dusty-purple);
+}
+
+.story-loader__rule {
+  display: block;
+  width: min(14rem, 60vw);
+  height: 1px;
+  margin: 2.4rem auto 0;
+  background: color-mix(in oklab, var(--rose-gold) 24%, transparent);
+  overflow: hidden;
+}
+
+.story-loader__rule > span {
+  display: block;
+  height: 100%;
+  background: color-mix(in oklab, var(--rose-gold) 85%, transparent);
+  transform-origin: left center;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Replay coda ────────────────────────────────────────── */
+.replay {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(6rem, 16vh, 10rem) 1.5rem;
+  text-align: center;
+}
+
+.replay__inner {
+  max-width: 34rem;
+  padding-top: clamp(6rem, 18vh, 12rem);
+}
+
+.replay__eyebrow {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--dusty-purple);
+}
+
+.replay__title {
+  margin-top: 1.6rem;
+  font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+  line-height: 1.22;
+  color: var(--color-foreground);
+}
+
+.replay__accent {
+  display: block;
+  font-style: italic;
+  color: var(--dusty-purple);
+}
+
+.replay__button {
+  margin-top: 2.6rem;
+  padding: 0.85rem 2.2rem;
+  border: 1px solid color-mix(in oklab, var(--rose-gold) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ivory) 70%, transparent);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+  transition:
+    background var(--transition-normal, 320ms) ease,
+    border-color var(--transition-normal, 320ms) ease;
+}
+
+.replay__button:hover {
+  background: color-mix(in oklab, var(--blush) 60%, transparent);
+  border-color: color-mix(in oklab, var(--rose-gold) 85%, transparent);
+}
+
+/* ── Keyboard access ────────────────────────────────────── */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--dusty-purple) 80%, transparent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--ivory);
+  color: var(--color-foreground);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transform: translateY(-200%);
+  transition: transform 220ms ease;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ── Reduced motion: the story stays, the movement goes ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .camera-rig,
+  .parallax-layer {
+    transform: none !important;
+  }
+
+  [data-particle-layer] {
+    display: none;
+  }
+}

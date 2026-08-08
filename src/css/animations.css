@@ -1,0 +1,293 @@
+/* Shared motion vocabulary. Scene-specific keyframes live in
+ * hero.css / scrapbook.css / beach.css. */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drift-up {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(var(--dx, 20px), -110vh, 0) rotate(300deg);
+    opacity: 0;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.4deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0.4deg);
+  }
+}
+
+@keyframes ribbon-sway {
+  0%,
+  100% {
+    transform: rotate(-1.1deg);
+  }
+  50% {
+    transform: rotate(1.1deg);
+  }
+}
+
+@keyframes heart-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--hx, 0px), -160px) scale(1.1);
+  }
+}
+
+@keyframes vinyl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vinyl-spin-centered {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes wave-breathe {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 0.95;
+  }
+}
+
+@keyframes cloud-drift-x {
+  0% {
+    transform: translateX(-6%);
+  }
+  100% {
+    transform: translateX(6%);
+  }
+}
+
+@utility float-slow {
+  animation: breathe 9s var(--ease-story) infinite;
+}
+
+@utility sway-slow {
+  animation: ribbon-sway 6s var(--ease-story) infinite;
+}
+
+@utility drifting {
+  animation: drift-up var(--drift-duration, 26s) linear var(--drift-delay, 0s) infinite;
+}
+
+@utility rise-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 1300ms var(--ease-story),
+    transform 1300ms var(--ease-story);
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- split text (SplitType-style, in-house) ---- */
+@utility split-root {
+  opacity: 0;
+}
+
+.split-line {
+  display: block;
+}
+
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  vertical-align: top;
+}
+
+.split-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ---- scene hand-off veil ---- */
+@utility scene-seam {
+  position: relative;
+  z-index: 5;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+@utility scene-seam-veil {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  top: -14vh;
+  display: block;
+  height: 28vh;
+  transform-origin: 50% 0%;
+  filter: blur(26px);
+  will-change: transform, opacity;
+}
+
+@utility cursor-ripple {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 12px;
+  width: 12px;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--rose-gold) 60%, transparent);
+  animation: cursor-ripple-out 720ms var(--ease-story) forwards;
+}
+
+@keyframes cursor-ripple-out {
+  from {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(7);
+    opacity: 0;
+  }
+}
+
+/* ---- light bloom carried across a scene seam ---- */
+@utility scene-seam-bloom {
+  position: absolute;
+  left: 50%;
+  top: -6vh;
+  display: block;
+  height: 34vh;
+  width: min(140vw, 1400px);
+  translate: -50% 0;
+  filter: blur(40px);
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* ---- interaction feedback: lift and light, never a mechanical jump ---- */
+@utility hover-lift {
+  transition:
+    transform 620ms var(--ease-story),
+    box-shadow 620ms var(--ease-story),
+    filter 620ms var(--ease-story);
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    filter: brightness(1.03);
+  }
+}
+
+/* Photographs answer the pointer by tilting and brightening their caption. */
+@utility hover-photo {
+  transition:
+    transform 700ms var(--ease-story),
+    box-shadow 700ms var(--ease-story);
+  &:hover {
+    box-shadow: var(--shadow-lift);
+  }
+  &:hover .photo-caption {
+    opacity: 1;
+    filter: brightness(1.08);
+  }
+}
+
+/* ---- micro emotion: things that look accidental ---- */
+@keyframes petal-settle {
+  0% {
+    opacity: 0;
+    transform: translate3d(-10px, -22px, 0) rotate(-16deg);
+  }
+  40% {
+    opacity: 0.9;
+  }
+  70% {
+    transform: translate3d(2px, 2px, 0) rotate(6deg);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translate3d(0, 0, 0) rotate(3deg);
+  }
+}
+
+@utility petal-settle {
+  animation: petal-settle 2.6s var(--ease-story) var(--settle-delay, 0s) both;
+}
+
+/* ---- global light grade: one continuous day across the whole story ---- */
+.light-grade {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: calc(0.18 + var(--story-progress, 0) * 0.34);
+  background: linear-gradient(
+    170deg,
+    color-mix(in oklab, var(--peach) calc(var(--story-progress, 0) * 70%), transparent),
+    transparent 46%,
+    color-mix(in oklab, var(--dusty-purple) calc(var(--story-progress, 0) * 55%), transparent)
+  );
+  transition: opacity 1.4s var(--ease-story);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-grade {
+    display: none;
+  }
+}

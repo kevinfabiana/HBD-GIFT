@@ -1,0 +1,568 @@
+/* ── one more melody ─────────────────────────────────────────
+ * The last handwritten page: warm cream light that slowly cools
+ * into water, an original instrumental, and a paper note.
+ * ---------------------------------------------------------- */
+
+.melody {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(7rem, 18vh, 12rem) 1.5rem clamp(8rem, 20vh, 13rem);
+  background: linear-gradient(
+    180deg,
+    var(--blush),
+    color-mix(in oklab, var(--cream) 74%, var(--blush)) 26%,
+    var(--ivory) 54%,
+    color-mix(in oklab, var(--cream) 78%, var(--soft-blue)) 82%,
+    var(--soft-blue)
+  );
+}
+
+/* soft sunlight that gently breathes while the section is on screen */
+.melody__sun {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    52% 46% at 50% 24%,
+    color-mix(in oklab, var(--soft-gold) 46%, transparent),
+    transparent 74%
+  );
+  opacity: calc(var(--melody-light, 0) * (1 - var(--melody-dive, 0) * 0.85));
+  animation: melody-sun 14s ease-in-out infinite alternate;
+}
+
+/* the cool blue that arrives as the visitor scrolls toward the water */
+.melody__cool {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 30%,
+    color-mix(in oklab, var(--soft-blue) 60%, transparent) 78%,
+    color-mix(in oklab, var(--soft-blue) 82%, transparent)
+  );
+  opacity: var(--melody-dive, 0);
+  mix-blend-mode: multiply;
+}
+
+@keyframes melody-sun {
+  from {
+    transform: translate3d(-1.5%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2%, 1.5%, 0) scale(1.06);
+  }
+}
+
+/* petals thin out as the water takes over */
+.melody__petals {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(1 - var(--melody-dive, 0) * 0.95);
+  transition: opacity 500ms linear;
+}
+
+/* tiny glowing particles drifting upward */
+.melody__sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(1 - var(--melody-dive, 0) * 0.7);
+}
+
+.melody__sparks span {
+  position: absolute;
+  bottom: -4%;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--soft-gold) 80%, white);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--soft-gold) 60%, transparent);
+  animation-name: melody-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+
+@keyframes melody-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(18px, -78vh, 0);
+    opacity: 0;
+  }
+}
+
+/* music notes — barely there until the song plays */
+.melody__notes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: color-mix(in oklab, var(--dusty-purple) 70%, transparent);
+  opacity: 0.16;
+  transition: opacity 1400ms var(--ease-story);
+}
+
+.melody[data-playing="true"] .melody__notes {
+  opacity: 0.5;
+}
+
+.melody__notes span {
+  position: absolute;
+  bottom: -6%;
+  animation-name: melody-note-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+
+@keyframes melody-note-float {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-6deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-26px, -72vh, 0) rotate(10deg);
+    opacity: 0;
+  }
+}
+
+/* the first bubbles of the aquarium, only near the bottom */
+.melody__bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--melody-dive, 0);
+}
+
+.melody__bubbles span {
+  position: absolute;
+  bottom: -3%;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, white 70%, var(--soft-blue));
+  background: color-mix(in oklab, white 30%, transparent);
+  animation-name: melody-bubble;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+
+@keyframes melody-bubble {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(12px, -34vh, 0);
+    opacity: 0;
+  }
+}
+
+/* everything visually quiets down while the melody plays */
+.melody[data-playing="true"] .melody__petals,
+.melody[data-playing="true"] .melody__sparks {
+  animation-play-state: running;
+  opacity: 0.45;
+}
+
+.melody[data-playing="true"] .melody__sparks span,
+.melody[data-playing="true"] .melody__bubbles span {
+  animation-duration: 26s !important;
+}
+
+.melody__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 54rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.melody__icon {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1;
+  filter: drop-shadow(0 6px 14px color-mix(in oklab, var(--rose-gold) 40%, transparent));
+}
+
+.melody__title {
+  margin-top: clamp(1.6rem, 4vh, 2.6rem);
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 6vw, 4rem);
+  font-weight: 300;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: var(--color-foreground);
+}
+
+.melody__subtitle {
+  margin: clamp(1.4rem, 3.4vh, 2.2rem) auto 0;
+  max-width: 34rem;
+  white-space: pre-line;
+  font-size: 0.98rem;
+  line-height: 2;
+  color: var(--color-muted-foreground);
+}
+
+/* ── the player ─────────────────────────────────────────── */
+.melody__player {
+  margin-top: clamp(3.5rem, 9vh, 6rem);
+}
+
+.melody__stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: clamp(1.4rem, 3vw, 2.25rem);
+  background: color-mix(in oklab, var(--indigo) 12%, var(--cream));
+  box-shadow:
+    var(--shadow-lift),
+    0 2px 0 color-mix(in oklab, white 60%, transparent) inset;
+}
+
+.melody__video,
+.melody__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.melody__poster {
+  transition: opacity 900ms var(--ease-story);
+}
+
+.melody__stage[data-started="true"] .melody__poster {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* premium loading animation */
+.melody__loader {
+  position: absolute;
+  inset: auto 0 1.35rem;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.melody__loader span {
+  width: 3px;
+  height: 14px;
+  border-radius: 999px;
+  background: color-mix(in oklab, white 82%, var(--rose-gold));
+  animation: melody-bars 1.05s ease-in-out infinite;
+}
+
+.melody__loader span:nth-child(2) {
+  animation-delay: 0.14s;
+}
+.melody__loader span:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+@keyframes melody-bars {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scaleY(1.3);
+    opacity: 1;
+  }
+}
+
+.melody__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: clamp(4.2rem, 8vw, 5.4rem);
+  aspect-ratio: 1;
+  padding-left: 4px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, white 72%, transparent);
+  background: color-mix(in oklab, white 34%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  color: color-mix(in oklab, white 92%, var(--rose-gold));
+  box-shadow: 0 20px 46px -22px color-mix(in oklab, var(--indigo) 45%, transparent);
+  transition:
+    transform 520ms var(--ease-story),
+    background 520ms var(--ease-story);
+}
+
+.melody__play:hover {
+  transform: scale(1.06);
+  background: color-mix(in oklab, white 48%, transparent);
+}
+
+.melody__play-ring {
+  position: absolute;
+  inset: -10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, white 55%, transparent);
+  animation: melody-ring 3.4s ease-out infinite;
+}
+
+@keyframes melody-ring {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+
+.melody__controls {
+  position: absolute;
+  inset: auto clamp(0.7rem, 2vw, 1.2rem) clamp(0.7rem, 2vw, 1.2rem);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, white 55%, transparent);
+  background: color-mix(in oklab, white 26%, transparent);
+  backdrop-filter: blur(16px) saturate(150%);
+  color: color-mix(in oklab, white 94%, var(--rose-gold));
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 420ms var(--ease-story),
+    transform 420ms var(--ease-story);
+}
+
+.melody__stage[data-controls="true"] .melody__controls {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.melody__ctl {
+  font-size: 0.72rem;
+  line-height: 1;
+  opacity: 0.85;
+  transition: opacity 260ms var(--ease-story);
+}
+
+.melody__ctl:hover {
+  opacity: 1;
+}
+
+.melody__scrub {
+  position: relative;
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: color-mix(in oklab, white 45%, transparent);
+}
+
+.melody__scrub span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, white 95%, var(--rose-gold));
+}
+
+.melody__time {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.melody__hint {
+  margin-top: 1.4rem;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.34em;
+  color: var(--color-muted-foreground);
+}
+
+/* ── composer's note ────────────────────────────────────── */
+.melody__note {
+  position: relative;
+  margin: clamp(4.5rem, 11vh, 7.5rem) auto 0;
+  max-width: 40rem;
+  padding: clamp(2.6rem, 6vw, 4rem) clamp(1.8rem, 5vw, 3.4rem) clamp(3.2rem, 7vw, 4.2rem);
+  text-align: left;
+  border-radius: 18px 22px 20px 24px;
+  background:
+    radial-gradient(
+      120% 90% at 12% 0%,
+      color-mix(in oklab, white 82%, var(--cream)),
+      transparent 60%
+    ),
+    linear-gradient(170deg, color-mix(in oklab, white 74%, var(--ivory)), var(--cream));
+  box-shadow:
+    0 30px 70px -46px color-mix(in oklab, var(--dusty-purple) 46%, transparent),
+    0 1px 0 color-mix(in oklab, white 70%, transparent) inset;
+  animation: melody-paper-float 11s ease-in-out infinite alternate;
+  transition:
+    transform 620ms var(--ease-story),
+    box-shadow 620ms var(--ease-story);
+}
+
+/* the paper texture itself — soft, uneven fibre */
+.melody__note::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(
+      circle at 22% 30%,
+      color-mix(in oklab, var(--sand) 40%, transparent) 0 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 72% 64%,
+      color-mix(in oklab, var(--rose-gold) 22%, transparent) 0 1px,
+      transparent 1px
+    );
+  background-size:
+    9px 9px,
+    13px 13px;
+}
+
+@keyframes melody-paper-float {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-0.35deg);
+  }
+  to {
+    transform: translate3d(0, -9px, 0) rotate(0.35deg);
+  }
+}
+
+.melody__note:hover {
+  transform: translate3d(0, -12px, 0) rotate(0deg);
+  box-shadow:
+    0 52px 96px -46px color-mix(in oklab, var(--dusty-purple) 58%, transparent),
+    0 1px 0 color-mix(in oklab, white 80%, transparent) inset;
+  animation-play-state: paused;
+}
+
+.melody__note[data-glow="true"] {
+  box-shadow:
+    0 40px 88px -46px color-mix(in oklab, var(--dusty-purple) 52%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--soft-gold) 42%, transparent),
+    0 0 60px color-mix(in oklab, var(--soft-gold) 26%, transparent);
+}
+
+/* a small piece of tape, one corner only */
+.melody__tape {
+  position: absolute;
+  left: 50%;
+  top: -0.85rem;
+  width: 6.5rem;
+  height: 1.7rem;
+  translate: -50% 0;
+  rotate: -3.5deg;
+  background: color-mix(in oklab, var(--sand) 45%, white);
+  opacity: 0.72;
+  box-shadow: 0 6px 16px -12px color-mix(in oklab, var(--indigo) 50%, transparent);
+  clip-path: polygon(2% 12%, 100% 0%, 98% 92%, 0% 100%);
+}
+
+.melody__flower {
+  position: absolute;
+  right: clamp(1.1rem, 3vw, 2rem);
+  top: clamp(1.1rem, 3vw, 1.9rem);
+  width: clamp(2.1rem, 4vw, 2.9rem);
+  color: color-mix(in oklab, var(--rose-gold) 72%, var(--dusty-purple));
+  opacity: 0.55;
+}
+
+.melody__note-title {
+  position: relative;
+  font-family: var(--font-hand);
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  line-height: 1;
+  color: var(--dusty-purple);
+}
+
+.melody__rule {
+  display: block;
+  width: 3.6rem;
+  height: 1px;
+  margin: 1.15rem 0 clamp(2rem, 4.5vh, 2.8rem);
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--rose-gold) 70%, transparent),
+    transparent
+  );
+}
+
+.melody__note-body {
+  position: relative;
+  display: grid;
+  gap: clamp(1.5rem, 3.4vh, 2.1rem);
+  font-size: clamp(0.95rem, 1.5vw, 1.02rem);
+  line-height: 2.05;
+  letter-spacing: 0.004em;
+  color: color-mix(in oklab, var(--color-foreground) 86%, var(--dusty-purple));
+}
+
+.melody__note-body p:first-child::first-letter {
+  font-family: var(--font-display);
+  font-size: 2.2em;
+  float: left;
+  line-height: 0.86;
+  padding: 0.06em 0.14em 0 0;
+  color: var(--rose-gold);
+}
+
+.melody__note-sign {
+  display: block;
+  margin-top: clamp(2.4rem, 5vh, 3.2rem);
+  text-align: right;
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  color: color-mix(in oklab, var(--dusty-purple) 82%, var(--rose-gold));
+  opacity: 0.9;
+}
+
+.melody__coda {
+  display: block;
+  margin-top: clamp(3.5rem, 8vh, 5.5rem);
+  font-size: 0.78rem;
+  letter-spacing: 0.5em;
+  color: color-mix(in oklab, var(--dusty-purple) 55%, transparent);
+  opacity: calc(1 - var(--melody-dive, 0) * 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .melody__sun,
+  .melody__note,
+  .melody__play-ring,
+  .melody__sparks span,
+  .melody__notes span,
+  .melody__bubbles span,
+  .melody__loader span {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,86 @@
+/* Scene scaffolding: how each act of the story occupies the page. */
+
+@utility scene {
+  position: relative;
+  overflow: hidden;
+  padding-inline: 1.5rem;
+}
+
+@utility scene-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+@utility scene-inner {
+  position: relative;
+  z-index: 10;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 64rem;
+}
+
+@utility layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Scene backdrops — gradients live in CSS, never in markup. */
+@utility bg-morning {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--ivory) 96%, white),
+    var(--cream) 52%,
+    var(--blush)
+  );
+}
+
+@utility bg-letter {
+  background: linear-gradient(
+    180deg,
+    var(--blush),
+    color-mix(in oklab, var(--cream) 88%, var(--peach))
+  );
+}
+
+@utility bg-world {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--cream) 88%, var(--peach)),
+    var(--sand)
+  );
+}
+
+@utility bg-sand {
+  background: var(--sand);
+}
+
+@utility bg-cream {
+  background: var(--cream);
+}
+
+@utility bg-finale {
+  background: linear-gradient(180deg, var(--sand), var(--blush) 60%, var(--soft-blue));
+}
+
+/* The virtual camera: handheld, never static, never distracting.
+ * Caps: x ±1%, y ±2%, scale 100 → 102%, rotation ±0.3°. */
+@utility camera-rig {
+  transform-origin: 50% 50%;
+  will-change: transform;
+  transform: translate3d(
+      calc(var(--cam-x, 0) * 1%),
+      calc(var(--cam-y, 0) * 2%),
+      0
+    )
+    scale(calc(1 + var(--cam-zoom, 0) * 0.02)) rotate(calc(var(--cam-rot, 0) * 0.3deg));
+}
+
+/* Parallax helper — depth is supplied per element as --depth. */
+@utility parallax-layer {
+  will-change: transform;
+  transform: translate3d(0, calc(var(--scroll-y, 0px) * var(--depth, 0.2) * -1), 0);
+}

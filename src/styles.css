@@ -1,0 +1,24 @@
+/* ---------------------------------------------------------------
+ * Entry stylesheet. It contains no rules of its own — every style
+ * lives in a dedicated module under src/css/.
+ * ------------------------------------------------------------- */
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+
+@import "./css/reset.css";
+@import "./css/variables.css";
+@import "./css/global.css";
+@import "./css/layout.css";
+@import "./css/components.css";
+@import "./css/animations.css";
+@import "./css/hero.css";
+@import "./css/scrapbook.css";
+@import "./css/beach.css";
+@import "./css/guitar.css";
+@import "./css/letters.css";
+@import "./css/melody.css";
+@import "./css/aquarium.css";
+@import "./css/responsive.css";
+@import "./css/production.css";
+
+@source "../src";

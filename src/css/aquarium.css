@@ -1,0 +1,416 @@
+/* Dream Aquarium — a luxury glass tank set inside a calm, daylit section.
+ * The section keeps the site palette; only the tank interior is underwater.
+ * All motion is either slow CSS ambience (light, caustics) or a GSAP transform
+ * on a layer — nothing animates layout. */
+
+.aquarium {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(6rem, 14vw, 11rem) 1.5rem clamp(6rem, 13vw, 10rem);
+  background:
+    radial-gradient(120% 60% at 50% 0%, color-mix(in oklab, var(--soft-blue) 55%, var(--cream)), transparent 62%),
+    linear-gradient(180deg, color-mix(in oklab, var(--lavender) 20%, var(--cream)) 0%, var(--cream) 45%, color-mix(in oklab, var(--blush) 22%, var(--cream)) 100%);
+}
+
+/* ---------- daylight ambience ---------- */
+.aq-ambience {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aq-sun {
+  position: absolute;
+  top: -18%;
+  left: 50%;
+  width: min(1100px, 120%);
+  height: 70%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--peach) 55%, transparent), transparent 72%);
+  filter: blur(30px);
+  opacity: 0.7;
+}
+
+.aq-glow {
+  position: absolute;
+  width: 46vw;
+  height: 46vw;
+  max-width: 620px;
+  max-height: 620px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.42;
+}
+
+.aq-glow--left {
+  left: -14%;
+  top: 22%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--lavender) 70%, transparent), transparent);
+}
+
+.aq-glow--right {
+  right: -14%;
+  bottom: 8%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--blush) 70%, transparent), transparent);
+}
+
+.aq-dust {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: color-mix(in oklab, white 70%, var(--peach));
+  opacity: 0.5;
+  animation: aq-float 22s ease-in-out infinite alternate;
+}
+
+.aq-dust:nth-child(odd) { width: 3px; height: 3px; opacity: 0.38; }
+.aq-dust--1 { left: 8%; top: 22%; animation-duration: 19s; }
+.aq-dust--2 { left: 22%; top: 68%; animation-duration: 26s; animation-delay: -6s; }
+.aq-dust--3 { left: 38%; top: 14%; animation-duration: 23s; animation-delay: -12s; }
+.aq-dust--4 { left: 54%; top: 78%; animation-duration: 30s; animation-delay: -3s; }
+.aq-dust:nth-child(6n) { left: 72%; top: 30%; }
+.aq-dust:nth-child(7n) { left: 88%; top: 58%; }
+.aq-dust:nth-child(8n) { left: 64%; top: 12%; }
+.aq-dust:nth-child(9n) { left: 15%; top: 44%; }
+.aq-dust:nth-child(11n) { left: 92%; top: 18%; }
+
+@keyframes aq-float {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(28px, -46px, 0); }
+}
+
+.aq-petal {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  border-radius: 60% 40% 55% 45% / 60% 60% 40% 40%;
+  background: linear-gradient(120deg, color-mix(in oklab, var(--blush) 80%, white), color-mix(in oklab, var(--peach) 70%, white));
+  opacity: 0.45;
+  animation: aq-petal-drift 26s linear infinite;
+}
+
+.aq-petal--1 { left: 6%; top: -6%; animation-duration: 30s; }
+.aq-petal--2 { left: 28%; top: -12%; animation-duration: 38s; animation-delay: -8s; }
+.aq-petal--3 { left: 47%; top: -8%; animation-duration: 34s; animation-delay: -18s; }
+.aq-petal--4 { left: 68%; top: -14%; animation-duration: 42s; animation-delay: -5s; }
+.aq-petal--5 { left: 84%; top: -6%; animation-duration: 32s; animation-delay: -22s; }
+.aq-petal--6 { left: 94%; top: -16%; animation-duration: 44s; animation-delay: -14s; }
+
+@keyframes aq-petal-drift {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.45; }
+  90% { opacity: 0.3; }
+  100% { transform: translate3d(-70px, 118vh, 0) rotate(320deg); opacity: 0; }
+}
+
+/* ---------- layout ---------- */
+.aq-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.aq-title {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  max-width: 22ch;
+}
+
+.aq-subtitle {
+  margin: 0;
+  max-width: 46ch;
+  font-size: clamp(0.94rem, 1.3vw, 1.06rem);
+  line-height: 1.75;
+  letter-spacing: 0.012em;
+  color: color-mix(in oklab, var(--foreground) 62%, transparent);
+}
+
+.aq-caption {
+  margin: clamp(0.5rem, 1.5vw, 1.25rem) 0 0;
+  font-size: 0.85rem;
+  line-height: 2;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: color-mix(in oklab, var(--foreground) 52%, transparent);
+}
+
+.aq-replay {
+  margin-top: 0.5rem;
+  padding: 0.95rem 2.6rem;
+  border: 1px solid color-mix(in oklab, var(--foreground) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, white 72%, var(--cream));
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  cursor: pointer;
+  box-shadow: 0 14px 40px -22px color-mix(in oklab, var(--indigo, #2b2c4a) 60%, transparent);
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.aq-replay:hover {
+  background: color-mix(in oklab, white 90%, var(--blush));
+  box-shadow: 0 20px 46px -20px color-mix(in oklab, var(--indigo, #2b2c4a) 55%, transparent);
+}
+
+/* ---------- the tank ---------- */
+.aq-tank {
+  position: relative;
+  width: min(100%, 900px);
+  margin: clamp(0.5rem, 2vw, 1.5rem) auto;
+  padding: 10px;
+  border-radius: 40px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, white 78%, var(--cream)),
+    color-mix(in oklab, var(--lavender) 26%, white)
+  );
+  box-shadow:
+    0 50px 90px -50px color-mix(in oklab, var(--indigo, #2b2c4a) 70%, transparent),
+    0 10px 26px -18px color-mix(in oklab, var(--indigo, #2b2c4a) 45%, transparent);
+}
+
+.aq-tank::after {
+  /* the soft shadow the tank casts on the page */
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -26px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--indigo, #2b2c4a) 24%, transparent), transparent);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.aq-stage {
+  position: relative;
+  height: clamp(420px, 46vw, 480px);
+  border-radius: 32px;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: crosshair;
+  background: linear-gradient(180deg, oklch(0.88 0.045 205) 0%, oklch(0.78 0.06 218) 55%, oklch(0.66 0.06 232) 100%);
+}
+
+@media (max-width: 640px) {
+  .aq-tank { border-radius: 28px; padding: 7px; }
+  .aq-stage { height: 340px; border-radius: 22px; }
+}
+
+.aq-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---------- water + light ---------- */
+.aq-water__gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(110% 70% at 50% -12%, oklch(0.96 0.03 200 / 0.7), transparent 62%),
+    linear-gradient(180deg, oklch(0.9 0.04 205 / 0.6) 0%, oklch(0.72 0.06 226 / 0.55) 60%, oklch(0.6 0.06 238 / 0.6) 100%);
+}
+
+.aq-caustics {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(closest-side, rgba(255, 255, 255, 0.2), transparent) 12% 18% / 26% 34% no-repeat,
+    radial-gradient(closest-side, rgba(255, 255, 255, 0.14), transparent) 62% 10% / 30% 40% no-repeat,
+    radial-gradient(closest-side, rgba(255, 255, 255, 0.12), transparent) 38% 44% / 34% 30% no-repeat,
+    radial-gradient(closest-side, rgba(255, 255, 255, 0.1), transparent) 84% 36% / 24% 36% no-repeat;
+  mix-blend-mode: screen;
+  animation: aq-caustics 34s ease-in-out infinite alternate;
+}
+
+.aq-caustics--slow {
+  opacity: 0.55;
+  animation-duration: 52s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes aq-caustics {
+  0% { transform: translate3d(-3%, -2%, 0) scale(1.05); filter: blur(16px) brightness(1); }
+  50% { transform: translate3d(2%, 3%, 0) scale(1.14); filter: blur(22px) brightness(1.1); }
+  100% { transform: translate3d(4%, -1%, 0) scale(1.08); filter: blur(18px) brightness(1.03); }
+}
+
+.aq-beams {
+  position: absolute;
+  inset: -30% -10% 0;
+  background: repeating-linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.14) 0 2%,
+    transparent 2% 9%,
+    rgba(255, 255, 255, 0.07) 9% 11%,
+    transparent 11% 20%
+  );
+  filter: blur(9px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  animation: aq-beams 28s ease-in-out infinite alternate;
+}
+
+@keyframes aq-beams {
+  from { transform: translate3d(-2%, 0, 0) skewX(-1deg); opacity: 0.4; }
+  to { transform: translate3d(3%, 0, 0) skewX(2deg); opacity: 0.66; }
+}
+
+/* ---------- scenery ---------- */
+.aq-item {
+  position: absolute;
+  display: block;
+  line-height: 0;
+}
+
+.aq-item svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.aq-item--micro {
+  opacity: 0.9;
+}
+
+.aq-back { filter: blur(1.2px) saturate(0.9); opacity: 0.8; }
+.aq-hardscape { opacity: 0.95; }
+.aq-front { filter: saturate(1.03); }
+.aq-leaf { opacity: 0.7; }
+
+.aq-fish {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  will-change: transform;
+}
+
+.aq-fish__inner {
+  display: block;
+  line-height: 0;
+  transform-origin: 50% 50%;
+}
+
+.aq-fish--betta .aq-fish__inner {
+  width: 96px;
+}
+
+.aq-fish svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------- bubbles, motes, food ---------- */
+.aq-bubble,
+.aq-mote,
+.aq-food {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.aq-bubble {
+  background: radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.18) 62%, rgba(255, 255, 255, 0.05));
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.7);
+}
+
+.aq-mote {
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.aq-food {
+  width: 4px;
+  height: 4px;
+  background: color-mix(in oklab, var(--peach, #f3c7a5) 80%, #b98b5e);
+  border-radius: 40%;
+}
+
+/* ---------- the glass ---------- */
+.aq-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    inset 0 22px 46px -22px rgba(255, 255, 255, 0.6),
+    inset 0 -30px 60px -30px rgba(20, 40, 70, 0.55),
+    inset 26px 0 50px -40px rgba(255, 255, 255, 0.7),
+    inset -26px 0 50px -40px rgba(255, 255, 255, 0.55);
+}
+
+.aq-glass__sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  pointer-events: none;
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0.3) 0 12%, transparent 26% 62%, rgba(255, 255, 255, 0.16) 70% 78%, transparent 88%),
+    radial-gradient(90% 40% at 20% 0%, rgba(255, 255, 255, 0.35), transparent 70%);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+
+.aq-waterline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  height: 12px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  filter: blur(2px);
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .aq-glass,
+  .aq-glass__sheen { border-radius: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aq-caustics,
+  .aq-beams,
+  .aq-petal,
+  .aq-dust {
+    animation: none;
+  }
+}
+
+/* ---------- sand substrate ---------- */
+.aq-substrate {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: -4%;
+  height: 22%;
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+  background:
+    radial-gradient(120% 80% at 30% 0%, rgba(255, 255, 255, 0.35), transparent 60%),
+    linear-gradient(180deg, oklch(0.9 0.035 90) 0%, oklch(0.83 0.04 84) 45%, oklch(0.74 0.04 80) 100%);
+  box-shadow: 0 -12px 26px -14px rgba(30, 60, 90, 0.35);
+  opacity: 0.92;
+}

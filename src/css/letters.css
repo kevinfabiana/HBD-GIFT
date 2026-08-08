@@ -1,0 +1,420 @@
+/* ── ucapann dari team skb sbyy ───────────────────────────────
+ * Four pieces of premium stationery on warm cream paper.
+ * ---------------------------------------------------------- */
+
+.letters {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(6rem, 16vh, 10rem) 1.5rem clamp(7rem, 18vh, 11rem);
+  background: linear-gradient(
+    180deg,
+    var(--cream),
+    color-mix(in oklab, var(--ivory) 70%, var(--peach)) 42%,
+    color-mix(in oklab, var(--cream) 84%, var(--sand)) 100%
+  );
+}
+
+.letters__sun {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      46% 40% at 22% 12%,
+      color-mix(in oklab, var(--soft-gold) 42%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      54% 48% at 84% 88%,
+      color-mix(in oklab, var(--blush) 34%, transparent),
+      transparent 76%
+    );
+  animation: letters-sun 16s ease-in-out infinite alternate;
+}
+
+@keyframes letters-sun {
+  from { opacity: 0.62; }
+  to { opacity: 1; }
+}
+
+/* very subtle paper texture */
+.letters__paper-texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(
+      92deg,
+      color-mix(in oklab, var(--rose-gold) 6%, transparent) 0 1px,
+      transparent 1px 4px
+    ),
+    repeating-linear-gradient(
+      3deg,
+      color-mix(in oklab, var(--sunset) 4%, transparent) 0 1px,
+      transparent 1px 5px
+    );
+  mix-blend-mode: multiply;
+}
+
+.letters__dust {
+  position: absolute;
+  border-radius: 999px;
+  background: color-mix(in oklab, white 78%, var(--soft-gold));
+  filter: blur(0.4px);
+  animation: letters-dust var(--dur, 18s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+@keyframes letters-dust {
+  from { transform: translate3d(0, 0, 0); opacity: 0.25; }
+  to { transform: translate3d(var(--dx, 14px), calc(var(--dy, -26px)), 0); opacity: 0.7; }
+}
+
+.letters__sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in oklab, white 86%, var(--soft-gold));
+  box-shadow: 0 0 10px color-mix(in oklab, var(--soft-gold) 70%, transparent);
+  opacity: 0;
+  animation: letters-sparkle 7s ease-in-out var(--delay, 0s) infinite;
+}
+
+@keyframes letters-sparkle {
+  0%, 82%, 100% { opacity: 0; transform: scale(0.5); }
+  88% { opacity: 0.9; transform: scale(1.2); }
+  94% { opacity: 0.2; transform: scale(0.8); }
+}
+
+/* ── grid ─────────────────────────────────────────────────── */
+.letters__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2.2rem, 6vw, 4.6rem);
+  max-width: 56rem;
+  margin: clamp(3rem, 7vh, 4.6rem) auto 0;
+}
+
+@media (max-width: 640px) {
+  .letters__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4rem;
+  }
+}
+
+/* ── envelope ─────────────────────────────────────────────── */
+.envelope {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.52 / 1;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  will-change: transform;
+}
+
+.envelope__body {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--ivory) 92%, white),
+      color-mix(in oklab, var(--cream) 88%, var(--sand))
+    );
+  box-shadow: var(--shadow-soft);
+  border: 1px solid color-mix(in oklab, var(--rose-gold) 22%, transparent);
+  transition: box-shadow 0.5s var(--ease-story);
+  overflow: hidden;
+}
+
+.envelope:hover .envelope__body {
+  box-shadow:
+    var(--shadow-lift),
+    0 18px 40px -22px color-mix(in oklab, var(--rose-gold) 50%, transparent);
+}
+
+/* the diagonal fold lines of a real envelope */
+.envelope__fold {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 1px),
+      color-mix(in oklab, var(--rose-gold) 16%, transparent) 50%,
+      transparent calc(50% + 1px)
+    ),
+    linear-gradient(
+      to bottom left,
+      transparent calc(50% - 1px),
+      color-mix(in oklab, var(--rose-gold) 16%, transparent) 50%,
+      transparent calc(50% + 1px)
+    );
+  opacity: 0.75;
+}
+
+.envelope__flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 58%;
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--ivory) 96%, white),
+    color-mix(in oklab, var(--cream) 82%, var(--peach))
+  );
+  border-radius: 1rem 1rem 0 0;
+  box-shadow: 0 8px 18px -14px color-mix(in oklab, var(--rose-gold) 60%, transparent);
+}
+
+.envelope__seal {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: clamp(2.1rem, 4.4vw, 2.7rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: color-mix(in oklab, white 86%, var(--blush));
+  background:
+    radial-gradient(
+      64% 64% at 34% 28%,
+      color-mix(in oklab, var(--coral) 80%, white),
+      var(--coral) 58%,
+      color-mix(in oklab, var(--sunset) 70%, var(--coral))
+    );
+  box-shadow:
+    inset 0 1px 2px color-mix(in oklab, white 40%, transparent),
+    0 6px 14px -8px color-mix(in oklab, var(--sunset) 70%, transparent);
+  transition: box-shadow 0.5s var(--ease-story);
+}
+
+.envelope:hover .envelope__seal {
+  box-shadow:
+    inset 0 1px 2px color-mix(in oklab, white 45%, transparent),
+    0 0 22px color-mix(in oklab, var(--soft-gold) 70%, transparent),
+    0 8px 18px -8px color-mix(in oklab, var(--sunset) 70%, transparent);
+}
+
+.envelope__meta {
+  position: absolute;
+  left: clamp(0.9rem, 2.4vw, 1.4rem);
+  bottom: clamp(0.8rem, 2.2vw, 1.2rem);
+  text-align: left;
+  pointer-events: none;
+}
+
+.envelope__stamp {
+  position: absolute;
+  right: clamp(0.8rem, 2.2vw, 1.2rem);
+  top: clamp(0.8rem, 2.2vw, 1.1rem);
+  padding: 0.3rem 0.45rem;
+  font-family: var(--font-body);
+  font-size: 0.5rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--foreground) 68%, var(--rose-gold));
+  border: 1px dashed color-mix(in oklab, var(--rose-gold) 45%, transparent);
+  border-radius: 0.35rem;
+  background: color-mix(in oklab, white 55%, transparent);
+}
+
+/* small decorations, one per envelope */
+.envelope__decor {
+  position: absolute;
+  left: clamp(0.9rem, 2.4vw, 1.4rem);
+  top: clamp(0.9rem, 2.4vw, 1.3rem);
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.decor-flower,
+.decor-ribbon,
+.decor-sticker,
+.decor-stampmark {
+  display: block;
+}
+
+.decor-sticker {
+  font-family: var(--font-hand);
+  font-size: 0.95rem;
+  color: color-mix(in oklab, var(--dusty-purple) 72%, var(--foreground));
+  transform: rotate(-7deg);
+  background: color-mix(in oklab, white 72%, var(--lavender));
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 10px -8px color-mix(in oklab, var(--dusty-purple) 70%, transparent);
+}
+
+.decor-stampmark {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--dusty-purple) 40%, transparent);
+  color: color-mix(in oklab, var(--dusty-purple) 72%, var(--foreground));
+  font-family: var(--font-body);
+  font-size: 0.42rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: grid;
+  place-items: center;
+  transform: rotate(-11deg);
+  opacity: 0.75;
+}
+
+/* the paper that slides out of the envelope on open */
+.envelope__peek {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 12%;
+  height: 62%;
+  border-radius: 0.55rem;
+  background: linear-gradient(180deg, white, color-mix(in oklab, var(--ivory) 90%, white));
+  box-shadow: 0 10px 24px -18px color-mix(in oklab, var(--rose-gold) 70%, transparent);
+  opacity: 0;
+  transform: translateY(30%);
+}
+
+/* ── letter overlay ───────────────────────────────────────── */
+.letters__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: color-mix(in oklab, var(--indigo) 24%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.letter-card {
+  position: relative;
+  width: min(34rem, 100%);
+  max-height: 84vh;
+  overflow-y: auto;
+  padding: clamp(2rem, 5vw, 3rem) clamp(1.6rem, 4.6vw, 2.8rem) clamp(2.4rem, 5vw, 3rem);
+  border-radius: 1.25rem;
+  transform-origin: top center;
+  background:
+    linear-gradient(180deg, white, color-mix(in oklab, var(--ivory) 92%, white)),
+    var(--cream);
+  box-shadow: var(--shadow-lift);
+  border: 1px solid color-mix(in oklab, var(--rose-gold) 20%, transparent);
+}
+
+.letter-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.35;
+  background-image: repeating-linear-gradient(
+    91deg,
+    color-mix(in oklab, var(--rose-gold) 7%, transparent) 0 1px,
+    transparent 1px 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+.letter-card__close {
+  position: absolute;
+  right: 0.9rem;
+  top: 0.9rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: color-mix(in oklab, var(--foreground) 70%, var(--rose-gold));
+  border: 1px solid color-mix(in oklab, var(--rose-gold) 30%, transparent);
+  background: color-mix(in oklab, white 70%, transparent);
+  cursor: pointer;
+  transition: transform 0.35s var(--ease-story);
+}
+
+.letter-card__close:hover { transform: scale(1.08); }
+
+.letter-card__line {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: color-mix(in oklab, var(--foreground) 86%, var(--rose-gold));
+}
+
+/* ── the mascot who peeks out from behind the letter ──────── */
+.letter-stage {
+  position: relative;
+  width: min(34rem, 100%);
+  isolation: isolate;
+}
+
+.letter-mascot {
+  position: absolute;
+  right: clamp(0.5rem, 4vw, 2.2rem);
+  bottom: calc(100% - clamp(2rem, 4.5vw, 2.7rem));
+  width: clamp(7.5rem, 21vw, 10rem);
+  height: clamp(7.5rem, 21vw, 10rem);
+  overflow: hidden;
+  pointer-events: auto;
+  z-index: 0;
+}
+
+.letter-mascot__body {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 10px 16px color-mix(in oklab, var(--rose-gold) 32%, transparent));
+}
+
+.letter-mascot__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  user-select: none;
+}
+
+.letter-mascot__spark,
+.letter-mascot__heart {
+  position: absolute;
+  left: 6%;
+  top: 8%;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 0.9rem;
+  color: color-mix(in oklab, var(--soft-gold) 80%, var(--coral));
+}
+
+.letter-mascot__heart {
+  left: auto;
+  right: 8%;
+  top: 4%;
+  color: color-mix(in oklab, var(--coral) 78%, white);
+  font-size: 1.05rem;
+}
+
+.letter-stage .letter-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}

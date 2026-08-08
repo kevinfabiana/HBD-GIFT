@@ -1,0 +1,49 @@
+/* Global typography and page-level behaviour. */
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+
+  @media (pointer: fine) {
+    body,
+    body * {
+      cursor: none;
+    }
+  }
+}
+
+/* Shared text treatments used across scenes. */
+@utility eyebrow {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--color-muted-foreground);
+}
+
+@utility display-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--dusty-purple);
+}
+
+@utility hand {
+  font-family: var(--font-hand);
+  letter-spacing: 0.01em;
+}
+
+@utility body-copy {
+  font-size: 0.98rem;
+  line-height: 2rem;
+  color: var(--color-muted-foreground);
+}

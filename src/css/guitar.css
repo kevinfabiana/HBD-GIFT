@@ -1,0 +1,357 @@
+/* ── The guitar scene ────────────────────────────────────────
+ * A private acoustic performance: warm spotlight, a handcrafted
+ * paper frame, and a custom player that gets out of the way.
+ * ---------------------------------------------------------- */
+
+.guitar {
+  position: relative;
+  z-index: 6; /* above the scene seam so no blurred glow bleeds over the title */
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(6rem, 14vh, 10rem) 1.5rem clamp(7rem, 16vh, 11rem);
+  background: linear-gradient(
+    180deg,
+    var(--sand),
+    color-mix(in oklab, var(--peach) 62%, var(--cream)) 34%,
+    color-mix(in oklab, var(--rose-gold) 26%, var(--cream)) 74%,
+    var(--blush)
+  );
+}
+
+/* the soft spotlight that arrives before the title */
+.guitar__spot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    46% 58% at 50% 34%,
+    color-mix(in oklab, var(--soft-gold) 60%, transparent),
+    transparent 72%
+  );
+  opacity: var(--guitar-light, 0);
+  transition: opacity 1200ms var(--ease-story);
+}
+
+.guitar__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 62rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.guitar__eyebrow {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--color-muted-foreground);
+}
+
+.guitar__title {
+  margin-top: 1.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.guitar__subtitle {
+  margin-top: 1rem;
+  font-family: var(--font-hand);
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  color: var(--dusty-purple);
+}
+
+/* ── The frame ─────────────────────────────────────────────── */
+.guitar__frame {
+  position: relative;
+  margin: clamp(3rem, 7vh, 4.5rem) auto 0;
+  max-width: 54rem;
+  padding: clamp(0.6rem, 1.4vw, 1rem);
+  border-radius: 26px;
+  border: 1px solid color-mix(in oklab, var(--rose-gold) 55%, transparent);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in oklab, white 78%, var(--cream)),
+      color-mix(in oklab, var(--sand) 70%, white)
+    );
+  box-shadow: var(--shadow-lift);
+  transform-style: preserve-3d;
+  transition:
+    transform 700ms var(--ease-story),
+    box-shadow 700ms var(--ease-story);
+}
+
+.guitar__frame::before {
+  /* paper tooth — a little stronger on hover */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--rose-gold) 40%, transparent) 0.5px,
+    transparent 0.6px
+  );
+  background-size: 3px 3px;
+  transition: opacity 700ms var(--ease-story);
+}
+
+.guitar__frame::after {
+  /* a single, restrained glass reflection */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    color-mix(in oklab, white 42%, transparent) 0%,
+    transparent 32%,
+    transparent 100%
+  );
+  opacity: 0.5;
+}
+
+.guitar__frame:hover {
+  box-shadow:
+    var(--shadow-lift),
+    0 0 0 1px color-mix(in oklab, var(--rose-gold) 30%, transparent);
+}
+
+.guitar__frame:hover::before {
+  opacity: 0.6;
+}
+
+.guitar__stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  background: color-mix(in oklab, var(--indigo) 88%, black);
+  aspect-ratio: 16 / 9;
+}
+
+.guitar__video,
+.guitar__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.guitar__poster {
+  transition: opacity 900ms var(--ease-story);
+}
+
+.guitar__stage[data-started="true"] .guitar__poster {
+  opacity: 0;
+}
+
+/* ── Play button ───────────────────────────────────────────── */
+.guitar__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: clamp(4.4rem, 8vw, 5.6rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, white 55%, transparent);
+  background: linear-gradient(
+    150deg,
+    color-mix(in oklab, white 34%, transparent),
+    color-mix(in oklab, var(--rose-gold) 42%, transparent)
+  );
+  backdrop-filter: blur(14px) saturate(130%);
+  color: color-mix(in oklab, white 92%, var(--cream));
+  box-shadow: 0 18px 48px -22px color-mix(in oklab, var(--sunset) 80%, transparent);
+  cursor: pointer;
+  transition:
+    transform 500ms var(--ease-story),
+    box-shadow 500ms var(--ease-story),
+    opacity 600ms var(--ease-story);
+}
+
+.guitar__play:hover {
+  transform: scale(1.08);
+  box-shadow: 0 26px 64px -20px color-mix(in oklab, var(--sunset) 92%, transparent);
+}
+
+.guitar__play::after {
+  /* ripple, always slightly out of step so it never feels mechanical */
+  content: "";
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, white 45%, transparent);
+  animation: guitar-ripple 3.4s var(--ease-story) infinite;
+}
+
+.guitar__play:hover::after {
+  animation-duration: 2.2s;
+}
+
+@keyframes guitar-ripple {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+/* ── Controls ──────────────────────────────────────────────── */
+.guitar__controls {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem clamp(0.9rem, 2vw, 1.4rem);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--indigo) 72%, transparent)
+  );
+  opacity: 0;
+  translate: 0 0.6rem;
+  transition:
+    opacity 500ms var(--ease-story),
+    translate 500ms var(--ease-story);
+}
+
+.guitar__stage[data-controls="true"] .guitar__controls {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.guitar__ctl {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  color: color-mix(in oklab, white 92%, var(--cream));
+  background: color-mix(in oklab, white 14%, transparent);
+  border: 1px solid color-mix(in oklab, white 26%, transparent);
+  cursor: pointer;
+  transition:
+    background 320ms var(--ease-story),
+    transform 320ms var(--ease-story);
+}
+
+.guitar__ctl:hover {
+  background: color-mix(in oklab, white 26%, transparent);
+  transform: translateY(-1px);
+}
+
+.guitar__scrub {
+  flex: 1;
+  height: 2px;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: color-mix(in oklab, white 26%, transparent);
+}
+
+.guitar__scrub > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--soft-gold), var(--rose-gold));
+}
+
+.guitar__time {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: color-mix(in oklab, white 78%, var(--cream));
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── The note that arrives after the last chord ────────────── */
+.guitar__note {
+  margin: clamp(2.6rem, 6vh, 4rem) auto 0;
+  max-width: 34rem;
+  opacity: 0;
+  transform: translateY(0.7rem);
+  transition:
+    opacity 1200ms var(--ease-story),
+    transform 1200ms var(--ease-story);
+}
+
+.guitar__note[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.guitar__note p {
+  font-family: var(--font-hand);
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  line-height: 1.5;
+  color: var(--dusty-purple);
+}
+
+.guitar__note-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(4px);
+  animation: guitar-write 620ms var(--ease-story) forwards;
+}
+
+@keyframes guitar-write {
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.guitar__signature {
+  display: block;
+  margin-top: 1.6rem;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  color: var(--rose-gold);
+  transform: rotate(-2.4deg);
+}
+
+.guitar__caption {
+  margin-top: 1.8rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+/* While the song plays the world steps back a little. */
+html[data-performance="on"] .light-grade {
+  opacity: 0.75;
+}
+
+html[data-performance="on"] .petal,
+html[data-performance="on"] .parallax-layer {
+  animation-duration: 22s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guitar__play::after,
+  .guitar__note-word {
+    animation: none;
+  }
+
+  .guitar__note-word {
+    opacity: 1;
+    filter: none;
+  }
+}

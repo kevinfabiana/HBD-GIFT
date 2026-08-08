@@ -1,0 +1,175 @@
+/* Act II — the paper album: polaroids, tape, handwriting, the deck. */
+
+@keyframes photo-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-46px) rotate(var(--rot, -3deg)) scale(0.94);
+  }
+  22% {
+    opacity: 1;
+    transform: translateY(-34px) rotate(calc(var(--rot, -3deg) * 2.4)) scale(0.97);
+  }
+  62% {
+    transform: translateY(10px) rotate(calc(var(--rot, -3deg) * 0.6)) scale(1.015);
+  }
+  78% {
+    transform: translateY(-5px) rotate(var(--rot, -3deg)) scale(0.998);
+  }
+  90% {
+    transform: translateY(2px) rotate(var(--rot, -3deg));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rot, -3deg));
+  }
+}
+
+@keyframes tape-drop {
+  0%,
+  55% {
+    opacity: 0;
+    transform: translate(-50%, -22px) rotate(var(--trot, -6deg)) scaleY(0.7);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 2px) rotate(var(--trot, -6deg)) scaleY(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(var(--trot, -6deg)) scaleY(1);
+  }
+}
+
+@keyframes shadow-settle {
+  0%,
+  60% {
+    opacity: 0;
+    filter: blur(24px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(18px);
+  }
+}
+
+@utility polaroid {
+  position: relative;
+  border-radius: 8px;
+  background: linear-gradient(
+    170deg,
+    color-mix(in oklab, var(--ivory) 96%, white),
+    color-mix(in oklab, var(--cream) 92%, white)
+  );
+  padding: 12px 12px 0;
+  box-shadow:
+    0 1px 0 color-mix(in oklab, var(--rose-gold) 25%, transparent),
+    0 18px 40px -26px color-mix(in oklab, var(--dusty-purple) 55%, transparent);
+  border: 1px solid color-mix(in oklab, var(--rose-gold) 16%, transparent);
+  transition:
+    transform 700ms var(--ease-story),
+    box-shadow 700ms var(--ease-story),
+    filter 700ms var(--ease-story);
+}
+
+@utility polaroid-photo {
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+@utility tape {
+  position: absolute;
+  left: 50%;
+  height: 26px;
+  border-radius: 2px;
+  background: linear-gradient(
+    100deg,
+    color-mix(in oklab, var(--peach) 55%, transparent),
+    color-mix(in oklab, var(--sand) 62%, transparent)
+  );
+  box-shadow: 0 6px 14px -10px color-mix(in oklab, var(--indigo) 60%, transparent);
+  opacity: 0.72;
+  mix-blend-mode: multiply;
+  transition: transform 500ms var(--ease-story);
+}
+
+@utility photo-dropping {
+  animation: photo-drop 1.2s var(--ease-story) both;
+}
+
+@utility tape-dropping {
+  animation: tape-drop 1.2s var(--ease-story) both;
+}
+
+@utility photo-shadow {
+  background: color-mix(in oklab, var(--dusty-purple) 34%, transparent);
+  border-radius: 50%;
+}
+
+@utility photo-shadow-settling {
+  animation: shadow-settle 1.2s var(--ease-story) both;
+}
+
+/* ---- music player ---- */
+@utility player-glow {
+  background: radial-gradient(
+    60% 50% at 50% 55%,
+    color-mix(in oklab, var(--lavender) calc(var(--glow-strength, 14) * 1%), transparent),
+    transparent 72%
+  );
+  transition: background 1600ms var(--ease-story);
+}
+
+@utility player-highlight {
+  background: radial-gradient(
+    36% 46% at var(--hl-x, 50%) var(--hl-y, 40%),
+    color-mix(in oklab, white 55%, transparent),
+    transparent 70%
+  );
+}
+
+@utility vinyl-disc {
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in oklab, var(--indigo) 88%, black) 32%,
+    color-mix(in oklab, var(--indigo) 70%, transparent) 33%,
+    color-mix(in oklab, var(--indigo) 82%, black) 100%
+  );
+  box-shadow: var(--shadow-lift);
+}
+
+@utility vinyl-spinning {
+  animation: vinyl-spin 6.5s linear infinite;
+}
+
+@utility vinyl-label-spinning {
+  animation: vinyl-spin-centered 6.5s linear infinite;
+}
+
+@utility vinyl-tonearm {
+  background: linear-gradient(
+    180deg,
+    var(--rose-gold),
+    color-mix(in oklab, var(--sand) 80%, white)
+  );
+  box-shadow: var(--shadow-soft);
+  transition: transform 1400ms var(--ease-story);
+}
+
+@utility viz-bar {
+  display: block;
+  flex: 1 1 0%;
+  border-radius: 9999px;
+  transform-origin: bottom;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--lavender) 90%, white),
+    color-mix(in oklab, var(--rose-gold) 70%, transparent)
+  );
+  transition: opacity 900ms var(--ease-story);
+}
+
+@utility viz-bar-active {
+  animation: wave-breathe var(--bar-duration, 1.2s) var(--ease-story) var(--bar-delay, 0s) infinite;
+}
